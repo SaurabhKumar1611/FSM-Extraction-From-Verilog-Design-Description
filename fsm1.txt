@@ -1,0 +1,297 @@
+Default state --- 
+
+
+IDLE ----> (DATA_CONFIG_REG[0] == 1'b0 && (fifo_tx_f_full == 1'b1 || fifo_tx_f_empty == 1'b0) && DATA_CONFIG_REG[1] == 1'b0) ----> IDLE
+
+IDLE ----> !(DATA_CONFIG_REG[0] == 1'b0 && (fifo_tx_f_full == 1'b1 || fifo_tx_f_empty == 1'b0) && DATA_CONFIG_REG[1] == 1'b0) & (DATA_CONFIG_REG[0] == 1'b1 && (fifo_tx_f_full == 1'b1 || fifo_tx_f_empty == 1'b0) && DATA_CONFIG_REG[1] == 1'b1) ----> IDLE
+
+IDLE ----> !(DATA_CONFIG_REG[0] == 1'b1 && (fifo_tx_f_full == 1'b1 || fifo_tx_f_empty == 1'b0) && DATA_CONFIG_REG[1] == 1'b1) & !(DATA_CONFIG_REG[0] == 1'b0 && (fifo_tx_f_full == 1'b1 || fifo_tx_f_empty == 1'b0) && DATA_CONFIG_REG[1] == 1'b0) & (DATA_CONFIG_REG[0] == 1'b1 && ((fifo_tx_f_full == 1'b0 && fifo_tx_f_empty == 1'b0) || fifo_tx_f_full == 1'b1) && DATA_CONFIG_REG[1] == 1'b0 && count_timeout < TIMEOUT_TX) ----> START
+
+START ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> START
+
+START ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_1
+
+CONTROLIN_1 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_1
+
+CONTROLIN_1 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_2
+
+CONTROLIN_2 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_2
+
+CONTROLIN_2 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_3
+
+CONTROLIN_3 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_3
+
+CONTROLIN_3 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_4
+
+CONTROLIN_4 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_4
+
+CONTROLIN_4 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_5
+
+CONTROLIN_5 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_5
+
+CONTROLIN_5 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_6
+
+CONTROLIN_6 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_6
+
+CONTROLIN_6 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_7
+
+CONTROLIN_7 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_7
+
+CONTROLIN_7 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_8
+
+CONTROLIN_8 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> CONTROLIN_8
+
+CONTROLIN_8 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_CIN
+
+RESPONSE_CIN ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_CIN
+
+RESPONSE_CIN ----> !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b0) ----> DELAY_BYTES
+
+RESPONSE_CIN ----> !(RESPONSE == 1'b0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b1) ----> NACK
+
+ADDRESS_1 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_1
+
+ADDRESS_1 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_2
+
+ADDRESS_2 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_2
+
+ADDRESS_2 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_3
+
+ADDRESS_3 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_3
+
+ADDRESS_3 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_4
+
+ADDRESS_4 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_4
+
+ADDRESS_4 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_5
+
+ADDRESS_5 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_5
+
+ADDRESS_5 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_6
+
+ADDRESS_6 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_6
+
+ADDRESS_6 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_7
+
+ADDRESS_7 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_7
+
+ADDRESS_7 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_8
+
+ADDRESS_8 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> ADDRESS_8
+
+ADDRESS_8 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_ADDRESS
+
+RESPONSE_ADDRESS ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_ADDRESS
+
+RESPONSE_ADDRESS ----> !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b0) ----> DELAY_BYTES
+
+RESPONSE_ADDRESS ----> !(RESPONSE == 1'b0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b1) ----> NACK
+
+DATA0_1 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_1
+
+DATA0_1 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_2
+
+DATA0_2 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_2
+
+DATA0_2 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_3
+
+DATA0_3 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_3
+
+DATA0_3 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_4
+
+DATA0_4 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_4
+
+DATA0_4 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_5
+
+DATA0_5 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_5
+
+DATA0_5 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_6
+
+DATA0_6 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_6
+
+DATA0_6 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_7
+
+DATA0_7 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_7
+
+DATA0_7 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_8
+
+DATA0_8 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA0_8
+
+DATA0_8 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_DATA0_1
+
+RESPONSE_DATA0_1 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_DATA0_1
+
+RESPONSE_DATA0_1 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b0) ----> DELAY_BYTES
+
+RESPONSE_DATA0_1 ----> !(RESPONSE == 1'b0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b1) ----> NACK
+
+DATA1_1 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_1
+
+DATA1_1 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_2
+
+DATA1_2 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_2
+
+DATA1_2 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_3
+
+DATA1_3 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_3
+
+DATA1_3 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_4
+
+DATA1_4 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_4
+
+DATA1_4 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_5
+
+DATA1_5 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_5
+
+DATA1_5 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_6
+
+DATA1_6 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_6
+
+DATA1_6 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_7
+
+DATA1_7 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_7
+
+DATA1_7 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_8
+
+DATA1_8 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DATA1_8
+
+DATA1_8 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_DATA1_1
+
+RESPONSE_DATA1_1 ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> RESPONSE_DATA1_1
+
+RESPONSE_DATA1_1 ----> !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b0) ----> DELAY_BYTES
+
+RESPONSE_DATA1_1 ----> !(RESPONSE == 1'b0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (RESPONSE == 1'b1) ----> NACK
+
+DELAY_BYTES ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> DELAY_BYTES
+
+DELAY_BYTES ----> !(count_send_data != DATA_CONFIG_REG[13:2]) & (count_tx == 2'd0) ----> ADDRESS_1
+
+DELAY_BYTES ----> !(count_tx == 2'd0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (count_tx   == 2'd1) ----> DATA0_1
+
+DELAY_BYTES ----> !(count_tx   == 2'd1) & !(count_tx == 2'd0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (count_tx   == 2'd2) ----> DATA1_1
+
+DELAY_BYTES ----> !(count_tx   == 2'd2) & !(count_tx   == 2'd1) & !(count_tx == 2'd0) & !(count_send_data != DATA_CONFIG_REG[13:2]) & (count_tx   == 2'd3) ----> STOP
+
+NACK ----> (count_send_data != DATA_CONFIG_REG[13:2]*2'd2) ----> NACK
+
+NACK ----> !(count_send_data != DATA_CONFIG_REG[13:2]*2'd2) & (count_tx == 2'd0) ----> CONTROLIN_1
+
+NACK ----> !(count_tx == 2'd0) & !(count_send_data != DATA_CONFIG_REG[13:2]*2'd2) & (count_tx == 2'd1) ----> ADDRESS_1
+
+NACK ----> !(count_tx == 2'd1) & !(count_tx == 2'd0) & !(count_send_data != DATA_CONFIG_REG[13:2]*2'd2) & (count_tx  == 2'd2) ----> DATA0_1
+
+NACK ----> !(count_tx  == 2'd2) & !(count_tx == 2'd1) & !(count_tx == 2'd0) & !(count_send_data != DATA_CONFIG_REG[13:2]*2'd2) & (count_tx == 2'd3) ----> DATA1_1
+
+STOP ----> (count_send_data != DATA_CONFIG_REG[13:2]) ----> STOP
+
+STOP ----> !(count_send_data != DATA_CONFIG_REG[13:2]) ----> IDLE
+
+
+
+Pair of initial state and final state :- 
+( IDLE , IDLE )
+( IDLE , IDLE )
+( IDLE , START )
+( START , START )
+( START , CONTROLIN_1 )
+( CONTROLIN_1 , CONTROLIN_1 )
+( CONTROLIN_1 , CONTROLIN_2 )
+( CONTROLIN_2 , CONTROLIN_2 )
+( CONTROLIN_2 , CONTROLIN_3 )
+( CONTROLIN_3 , CONTROLIN_3 )
+( CONTROLIN_3 , CONTROLIN_4 )
+( CONTROLIN_4 , CONTROLIN_4 )
+( CONTROLIN_4 , CONTROLIN_5 )
+( CONTROLIN_5 , CONTROLIN_5 )
+( CONTROLIN_5 , CONTROLIN_6 )
+( CONTROLIN_6 , CONTROLIN_6 )
+( CONTROLIN_6 , CONTROLIN_7 )
+( CONTROLIN_7 , CONTROLIN_7 )
+( CONTROLIN_7 , CONTROLIN_8 )
+( CONTROLIN_8 , CONTROLIN_8 )
+( CONTROLIN_8 , RESPONSE_CIN )
+( RESPONSE_CIN , RESPONSE_CIN )
+( RESPONSE_CIN , DELAY_BYTES )
+( RESPONSE_CIN , NACK )
+( ADDRESS_1 , ADDRESS_1 )
+( ADDRESS_1 , ADDRESS_2 )
+( ADDRESS_2 , ADDRESS_2 )
+( ADDRESS_2 , ADDRESS_3 )
+( ADDRESS_3 , ADDRESS_3 )
+( ADDRESS_3 , ADDRESS_4 )
+( ADDRESS_4 , ADDRESS_4 )
+( ADDRESS_4 , ADDRESS_5 )
+( ADDRESS_5 , ADDRESS_5 )
+( ADDRESS_5 , ADDRESS_6 )
+( ADDRESS_6 , ADDRESS_6 )
+( ADDRESS_6 , ADDRESS_7 )
+( ADDRESS_7 , ADDRESS_7 )
+( ADDRESS_7 , ADDRESS_8 )
+( ADDRESS_8 , ADDRESS_8 )
+( ADDRESS_8 , RESPONSE_ADDRESS )
+( RESPONSE_ADDRESS , RESPONSE_ADDRESS )
+( RESPONSE_ADDRESS , DELAY_BYTES )
+( RESPONSE_ADDRESS , NACK )
+( DATA0_1 , DATA0_1 )
+( DATA0_1 , DATA0_2 )
+( DATA0_2 , DATA0_2 )
+( DATA0_2 , DATA0_3 )
+( DATA0_3 , DATA0_3 )
+( DATA0_3 , DATA0_4 )
+( DATA0_4 , DATA0_4 )
+( DATA0_4 , DATA0_5 )
+( DATA0_5 , DATA0_5 )
+( DATA0_5 , DATA0_6 )
+( DATA0_6 , DATA0_6 )
+( DATA0_6 , DATA0_7 )
+( DATA0_7 , DATA0_7 )
+( DATA0_7 , DATA0_8 )
+( DATA0_8 , DATA0_8 )
+( DATA0_8 , RESPONSE_DATA0_1 )
+( RESPONSE_DATA0_1 , RESPONSE_DATA0_1 )
+( RESPONSE_DATA0_1 , DELAY_BYTES )
+( RESPONSE_DATA0_1 , NACK )
+( DATA1_1 , DATA1_1 )
+( DATA1_1 , DATA1_2 )
+( DATA1_2 , DATA1_2 )
+( DATA1_2 , DATA1_3 )
+( DATA1_3 , DATA1_3 )
+( DATA1_3 , DATA1_4 )
+( DATA1_4 , DATA1_4 )
+( DATA1_4 , DATA1_5 )
+( DATA1_5 , DATA1_5 )
+( DATA1_5 , DATA1_6 )
+( DATA1_6 , DATA1_6 )
+( DATA1_6 , DATA1_7 )
+( DATA1_7 , DATA1_7 )
+( DATA1_7 , DATA1_8 )
+( DATA1_8 , DATA1_8 )
+( DATA1_8 , RESPONSE_DATA1_1 )
+( RESPONSE_DATA1_1 , RESPONSE_DATA1_1 )
+( RESPONSE_DATA1_1 , DELAY_BYTES )
+( RESPONSE_DATA1_1 , NACK )
+( DELAY_BYTES , DELAY_BYTES )
+( DELAY_BYTES , ADDRESS_1 )
+( DELAY_BYTES , DATA0_1 )
+( DELAY_BYTES , DATA1_1 )
+( DELAY_BYTES , STOP )
+( NACK , NACK )
+( NACK , CONTROLIN_1 )
+( NACK , ADDRESS_1 )
+( NACK , DATA0_1 )
+( NACK , DATA1_1 )
+( STOP , STOP )
+( STOP , IDLE )
+
+
+
+Total no of states = 41
+All states are :-  
+ADDRESS_1 , ADDRESS_2 , ADDRESS_3 , ADDRESS_4 , ADDRESS_5 , ADDRESS_6 , ADDRESS_7 , ADDRESS_8 , CONTROLIN_1 , CONTROLIN_2 , CONTROLIN_3 , CONTROLIN_4 , CONTROLIN_5 , CONTROLIN_6 , CONTROLIN_7 , CONTROLIN_8 , DATA0_1 , DATA0_2 , DATA0_3 , DATA0_4 , DATA0_5 , DATA0_6 , DATA0_7 , DATA0_8 , DATA1_1 , DATA1_2 , DATA1_3 , DATA1_4 , DATA1_5 , DATA1_6 , DATA1_7 , DATA1_8 , DELAY_BYTES , IDLE , NACK , RESPONSE_ADDRESS , RESPONSE_CIN , RESPONSE_DATA0_1 , RESPONSE_DATA1_1 , START , STOP , 
+
+No of self loops = 42
+No of transitions = 93
+
+States having self loops :-  ADDRESS_1 , ADDRESS_2 , ADDRESS_3 , ADDRESS_4 , ADDRESS_5 , ADDRESS_6 , ADDRESS_7 , ADDRESS_8 , CONTROLIN_1 , CONTROLIN_2 , CONTROLIN_3 , CONTROLIN_4 , CONTROLIN_5 , CONTROLIN_6 , CONTROLIN_7 , CONTROLIN_8 , DATA0_1 , DATA0_2 , DATA0_3 , DATA0_4 , DATA0_5 , DATA0_6 , DATA0_7 , DATA0_8 , DATA1_1 , DATA1_2 , DATA1_3 , DATA1_4 , DATA1_5 , DATA1_6 , DATA1_7 , DATA1_8 , DELAY_BYTES , IDLE , NACK , RESPONSE_ADDRESS , RESPONSE_CIN , RESPONSE_DATA0_1 , RESPONSE_DATA1_1 , START , STOP , 
+
